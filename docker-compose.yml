@@ -1,0 +1,18 @@
+version: '2.2'
+
+services:
+  dev:
+    build:
+      context: .
+      target: jekyll
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./:/usr/src/app
+      - bundle-volume:/usr/src/bundle
+    environment:
+      JEKYLL_ENV: development
+    command: [ "bundle", "exec", "jekyll", "serve", "-H", "0.0.0.0" ]
+
+volumes:
+  bundle-volume:
