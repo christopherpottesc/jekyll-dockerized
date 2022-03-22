@@ -14,5 +14,27 @@ services:
       JEKYLL_ENV: development
     command: [ "bundle", "exec", "jekyll", "serve", "-H", "0.0.0.0" ]
 
+  build:
+    build:
+      context: .
+      target: jekyll
+    volumes:
+      - ./:/usr/src/app
+      - bundle-volume:/usr/src/bundle
+    environment:
+      JEKYLL_ENV: production
+    command: ["bundle", "exec", "jekyll", "build"]
+
+  nginx:
+    build:
+      context: .
+      target: nginx
+    depends_on:
+      - build
+    ports:
+      - "8080:80"
+    volumes:
+      - ./_site/:/usr/share/nginx/html/site
+
 volumes:
   bundle-volume:
